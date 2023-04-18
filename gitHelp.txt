@@ -17,3 +17,6 @@ On top of some standard Linux commands, git also has its own standalone commands
 
   $ git status :		assesses the status of the local repo
 	alerts the user of untracked files, merge conflicts, etc.
+
+For help with integrating git in MATLAB, follow this link:
+  https://www.mathworks.com/help/matlab/matlab_prog/use-git-in-matlab.html
