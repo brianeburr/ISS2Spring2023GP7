@@ -1,0 +1,19 @@
+-- Some Helpful Git Commands --
+
+Some general Linux commands are helpful to know for using command-line git:
+
+  $ cd [DESTINATION] :		changes the current working directory to whatever is specified in [DESTINATION]
+
+On top of some standard Linux commands, git also has its own standalone commands for source control:
+
+  $ git add -A :		adds all new files in the local repository to tracking
+
+  $ git commit -am [MESSAGE] :	commits all file changes to local repository
+	the specified [MESSAGE] is what is sent to the global repo as the commit message
+
+  $ git pull :			merges global repo files with local repo (updates your machine)
+
+  $ git push :			merges local repo files with global repo (updates online repo)
+
+  $ git status :		assesses the status of the local repo
+	alerts the user of untracked files, merge conflicts, etc.
