@@ -13,20 +13,26 @@ initProbVal = sequenceLength/9/2; % initial value for probability distribution t
 % assumes uniform distribution to start, prevents probability of zero,
 % can be empirically tested to find best value
 
-probs = [[]];
+global SYMBOLDATA
+
+sums = [[]];
 for i = 1:9
     for j = 1:9
-        probs(i,j) = initProbVal;
+        sums(i,j) = initProbVal;
     end
 end
 
 %3. For each element in sequence, run 'symbolMachine(pmf for given
 %situation)', accepting return tuple of symbol,penalty
-for ii = 1:sequenceLength
-    %lastKnownSymbol = SYMBOLDATA.
 
+probs = sums(0)/sum(sums(0));
 
+[symbol,penalty] = symbolMachine(probs(1)); %must run once before loop because of different functionality
+for ii = 2:sequenceLength
+    lastKnownSymbol = SYMBOLDATA.sequence(ii-1);  %finds most recent symbol to index into props matrix, give conditional probabilities
+    probs = sums(lastKnownSymbol)/sum(sums(lastKnownSymbol));
     [symbol,penalty] = symbolMachine(probs);
+    sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + 1;
 end
 
 %4. Run 'report symbol machine
