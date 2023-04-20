@@ -10,7 +10,9 @@
 %1 array containing probability distributions for a giving prior number
 
 %% Training Portion of symbol machine
-sequenceName = 'DIAwind';
+
+sequenceName = 'DIAwind'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
+
 bestInitFactor = 0.1;
 bestPenalty = realmax; %initalize best penalty to max number
 for initFactor = cat(2, 0:0.01:0.09 , 0.1:0.1:2) 
