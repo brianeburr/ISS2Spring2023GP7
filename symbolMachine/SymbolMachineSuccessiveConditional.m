@@ -8,14 +8,14 @@
 %2. For this method, will be estimating the conditional probabilities for a
 %number based on the number previous. Data structure will be 2d array,
 %1 array containing probability distributions for a giving prior number
-sequenceName = 'DIAtemp';
+sequenceName = 'selfAdapt';
 
 bestInitFactor = 0.1;
 bestPenalty = realmax; %initalize best penalty to max number
 
-for initFactor = 0:0.005:0.02
+for initFactor = cat(2, 0:0.01:0.09 , 0.1:0.1:2) 
     sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', sequenceName, '_train.mat'));
-    initProbVal = ceil(sequenceLength/9*bestInitFactor)+1; % initial value for probability distribution to be composed of, 
+    initProbVal = ceil(sequenceLength/9*initFactor)+1; % initial value for probability distribution to be composed of, 
     % assumes uniform distribution to start, prevents probability of zero,
     % can be empirically tested to find best value
     global SYMBOLDATA

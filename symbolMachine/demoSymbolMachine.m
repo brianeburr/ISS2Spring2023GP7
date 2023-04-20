@@ -2,7 +2,8 @@
 % Created by Mike Wakin - 2023-03-07
 
 % Initialize Symbol Machine with one of the provided sequences
-sequenceLength = initializeSymbolMachine('sequences\sequence_DIAtemp_train.mat');
+%{
+sequenceLength = initializeSymbolMachine('sequences\sequence_selfAdapt_train.mat');
 
 % Stepping through the sequence one symbol at a time, your job is to 
 % provide the Symbol Machine with a probabilistic forecast (a pmf) for the
@@ -22,13 +23,15 @@ end
 % After you have forecasted all of the entries in the sequence, the
 % following function gives you a report of how good your predictions were.
 reportSymbolMachine;
-
+%}
 % As it turns out, the symbols in this particular sequence do not actually
 % have a uniform pmf. Supposing we don't know in advance what the true pmf
 % is, we can try to learn it along the way. In the following code, we start
 % with a uniform pmf, but as we go, we reshape the pmf according to the
 % symbols that we actually saw (up until now) in the sequence.
-sequenceLength = initializeSymbolMachine('sequences\sequence_DIAtemp_train.mat');
+
+
+sequenceLength = initializeSymbolMachine('sequences\sequence_selfAdapt_train.mat');
 symbolCounts = ones(1,9); 
 for ii = 1:sequenceLength
     probs = symbolCounts/sum(symbolCounts);

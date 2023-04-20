@@ -2,7 +2,7 @@
 
 %1. initialize the symbol machine, setting global variables for overall
 %sequence, using below code. Set input file to parameter of init function
-sequenceLength = initializeSymbolMachine('sequence_nonuniform_train.mat');
+sequenceLength = initializeSymbolMachine('sequences\sequence_selfAdapt_train.mat');
 
 %2. Generate probability distribution, this can be done in many ways, but
 %normalization property of pmf must be observed
