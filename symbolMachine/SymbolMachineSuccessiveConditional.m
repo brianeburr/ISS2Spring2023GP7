@@ -8,7 +8,7 @@
 %2. For this method, will be estimating the conditional probabilities for a
 %number based on the number previous. Data structure will be 2d array,
 %1 array containing probability distributions for a giving prior number
-sequenceName = 'selfAdapt';
+sequenceName = 'DIAwind';
 
 bestInitFactor = 0.1;
 bestPenalty = realmax; %initalize best penalty to max number
