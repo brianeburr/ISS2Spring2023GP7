@@ -2,7 +2,7 @@
 % Created by Mike Wakin - 2023-03-07
 
 % Initialize Symbol Machine with one of the provided sequences
-sequenceLength = initializeSymbolMachine('sequence_nonuniform_train.mat');
+sequenceLength = initializeSymbolMachine('sequences\sequence_DIAtemp_train.mat');
 
 % Stepping through the sequence one symbol at a time, your job is to 
 % provide the Symbol Machine with a probabilistic forecast (a pmf) for the
@@ -28,7 +28,7 @@ reportSymbolMachine;
 % is, we can try to learn it along the way. In the following code, we start
 % with a uniform pmf, but as we go, we reshape the pmf according to the
 % symbols that we actually saw (up until now) in the sequence.
-sequenceLength = initializeSymbolMachine('sequence_nonuniform_train.mat');
+sequenceLength = initializeSymbolMachine('sequences\sequence_DIAtemp_train.mat');
 symbolCounts = ones(1,9); 
 for ii = 1:sequenceLength
     probs = symbolCounts/sum(symbolCounts);
