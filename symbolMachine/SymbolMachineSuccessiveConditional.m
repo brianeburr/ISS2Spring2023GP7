@@ -8,11 +8,11 @@
 %2. For this method, will be estimating the conditional probabilities for a
 %number based on the number previous. Data structure will be 2d array,
 %1 array containing probability distributions for a giving prior number
-sequenceName = 'DIAwind';
 
+%% Training Portion of symbol machine
+sequenceName = 'DIAwind';
 bestInitFactor = 0.1;
 bestPenalty = realmax; %initalize best penalty to max number
-
 for initFactor = cat(2, 0:0.01:0.09 , 0.1:0.1:2) 
     sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', sequenceName, '_train.mat'));
     initProbVal = ceil(sequenceLength/9*initFactor)+1; % initial value for probability distribution to be composed of, 
@@ -37,24 +37,17 @@ for initFactor = cat(2, 0:0.01:0.09 , 0.1:0.1:2)
     end
     %4. Run 'report symbol machine
     %reportSymbolMachine;
-
     if SYMBOLDATA.totalPenaltyInBits < bestPenalty
         bestInitFactor = initFactor;
         bestPenalty = SYMBOLDATA.totalPenaltyInBits;
     end
-
     disp("Testing initFactor: " + initFactor + ". Percent Guessed Correct: " + 100*SYMBOLDATA.correctPredictions/SYMBOLDATA.sequenceLength + ". Total Penalty: " + SYMBOLDATA.totalPenaltyInBits);
 end
-
 disp("Empirically Determined Best Init Factor: " + bestInitFactor)
 
 
 
-
-
-
-
-
+%% Testing section, uses training from previous section
 sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', sequenceName, '_test.mat'));
 initProbVal = ceil(sequenceLength/9*bestInitFactor)+1; % initial value for probability distribution to be composed of, 
 global SYMBOLDATA
