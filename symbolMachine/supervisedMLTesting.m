@@ -6,7 +6,7 @@
 % a non-uniform pdf (for now) will be assigned based on which symbol was
 % predicted with a large weight towards the predicted value.
 
-% In future iterations, the training portion (taken directly from
+% In future iterations, the training portion (taken directly from,,
 % SymbolMachineSuccessiveConditional.m) may be implemented to estimate the
 % best bias level for the predicted symbol.
 
