@@ -11,7 +11,7 @@
 
 %% Training Portion of symbol machine
 
-sequenceName = 'DIAwind'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
+sequenceName = 'DIAtemp'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
 
 bestInitFactor = 0.1;
 bestPenalty = realmax; %initalize best penalty to max number

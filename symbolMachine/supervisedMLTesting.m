@@ -12,10 +12,12 @@
 
 % As of now, training has been done solely on the DIAtemp dataset.
 
-%% Training Portion of symbol machine
+load("probMLModels\linRegModel.mat");
+userIn = input("Enter the test sequence label: ", 's');
+sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', userIn, '_test.mat'));
 
-% sequenceName = 'DIAwind'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
-% 
+%% Training Portion of symbol machine
+ 
 % bestInitFactor = 0.1;
 % bestPenalty = realmax; %initalize best penalty to max number
 % for initFactor = cat(2, 0:0.01:0.09 , 0.1:0.1:2) 
@@ -30,8 +32,8 @@
 %             sums(i,j) = initProbVal;
 %         end
 %     end
-%     %3. For each element in sequence, run 'symbolMachine(pmf for given
-%     %situation)', accepting return tuple of symbol,penalty
+%     % 3. For each element in sequence, run 'symbolMachine(pmf for given
+%     % situation)', accepting return tuple of symbol,penalty
 %     probs = sums(1,:)/sum(sums(1,:));
 %     [symbol,penalty] = symbolMachine(probs); %must run once before loop because of different functionality
 %     for ii = 2:sequenceLength
@@ -40,8 +42,8 @@
 %         [symbol,penalty] = symbolMachine(probs);
 %         sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + 1;
 %     end
-%     %4. Run 'report symbol machine
-%     %reportSymbolMachine;
+%     % 4. Run 'report symbol machine
+%     % reportSymbolMachine;
 %     if SYMBOLDATA.totalPenaltyInBits < bestPenalty
 %         bestInitFactor = initFactor;
 %         bestPenalty = SYMBOLDATA.totalPenaltyInBits;
@@ -51,31 +53,64 @@
 % disp("Empirically Determined Best Init Factor: " + bestInitFactor)
 
 
-%% Testing Regression ML Model with round() and Preset Nonuniform Dist
-load("probMLModels\linRegModel.mat");
-userIn = input("Enter the test sequence label: ", 's');
-sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', userIn, '_test.mat'));
+%% Testing Linear Regression Model with round() and Preset Nonuniform Dist
 
-%global SYMBOLDATA
-biasVal = 0.9;
-initProbVal = (ones(9,1) - biasVal) / 8;
-table = ones(1,9);
-
-[symbol, penalty] = symbolMachine(ones(9,1) / 9); % The algorithm can't make a prediction with no data
-table(1,:) = symbol;
-
-for i = 2:sequenceLength
-    predicted = round(linRegModel.predictFcn(table));
-    probs = initProbVal;
-    probs(predicted(end)) = biasVal;
-
-    [symbol, penalty] = symbolMachine(probs);
-    table(i, 1:8) = table(i-1, 2:9);
-    table(i, 9) = symbol;
-end
-reportSymbolMachine;
-
-
-
+% load("probMLModels\linRegModel.mat");
+% userIn = input("Enter the test sequence label: ", 's');
+% sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', userIn, '_test.mat'));
+% 
+% % global SYMBOLDATA
+% biasVal = 0.9;
+% initProbVal = (ones(9,1) - biasVal) / 8;
+% table = ones(1,9);
+% 
+% [symbol, penalty] = symbolMachine(ones(9,1) / 9); % The algorithm can't make a prediction with no data
+% table(1,:) = symbol;
+% 
+% for i = 2:sequenceLength
+%     predicted = round(linRegModel.predictFcn(table));
+%     probs = initProbVal;
+%     probs(predicted(end)) = biasVal;
+% 
+%     [symbol, penalty] = symbolMachine(probs);
+%     table(i, 1:8) = table(i-1, 2:9);
+%     table(i, 9) = symbol;
+% end
+% reportSymbolMachine;
 
 
+%% Testing Neural Regression Model with round() and Preset Nonuniform Dist
+
+% load("probMLModels\triNeuralReg.mat");
+% userIn = input("Enter the test sequence label: ", 's');
+% sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', userIn, '_test.mat'));
+% 
+% %global SYMBOLDATA
+% biasVal = 0.9;
+% initProbVal = (ones(9,1) - biasVal) / 8;
+% counts = zeros(1,9);
+% predTable = zeros(1,18);
+% 
+% [symbol, penalty] = symbolMachine(ones(9,1) / 9); % The algorithm can't make a prediction with no data
+% counts(symbol) = counts(symbol) + 1;
+% predTable(1,10:18) = symbol;
+% 
+% for i = 2:sequenceLength
+%     predicted = round(triNeuralReg.predictFcn(predTable));
+%     if(predicted(end) > 9) predicted(end) = 9; end
+%     if(predicted(end) < 0) predicted(end) = 0; end
+% 
+%     probs = initProbVal;
+%     probs(predicted(end)) = biasVal;
+%     
+%     [symbol, penalty] = symbolMachine(probs);
+% 
+%     counts(symbol) = counts(symbol) + 1;
+%     predTable(i, 1:9) = counts / sum(counts);
+% 
+%     predTable(i, 10:17) = predTable(i-1, 11:18);
+%     predTable(i, 18) = symbol;
+% end
+% reportSymbolMachine;
+
+%%

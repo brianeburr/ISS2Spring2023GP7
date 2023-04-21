@@ -1,4 +1,4 @@
-sequenceLength = initializeSymbolMachine('sequences\sequence_DIAwind_test.mat');
+sequenceLength = initializeSymbolMachine('sequences\sequence_DIAtemp_test.mat');
 symbolCounts = ones(1,9); 
 for ii = 1:sequenceLength
     probs = symbolCounts/sum(symbolCounts);
