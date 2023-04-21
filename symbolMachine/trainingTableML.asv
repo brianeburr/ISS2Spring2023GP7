@@ -1,0 +1,15 @@
+userIn = input("Type the sequence name: ", 's');
+filename = strcat("sequences\sequence_", userIn, "_train.mat");
+load(filename);
+trainTable = ones(20,10);
+
+trainTable(1,:) = sequence(1);
+counts = ones
+
+for i = 2:length(sequence)
+    trainTable(i, 1:9) = trainTable (i-1, 2:10);
+    trainTable(i, 10) = sequence(i);
+end
+
+disp(strcat("Saving trainTable in :: trainTables\trainTable_", userIn, "_train.mat"));
+save(strcat("trainTables\trainTable_", userIn, "_train.mat"), "trainTable");
