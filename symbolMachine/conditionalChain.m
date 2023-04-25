@@ -1,6 +1,9 @@
-%% Training Portion of symbol machine
+%% Sequence name/input
 
-sequenceName = 'DIAtemp';
+sequenceName = 'Dickens';
+
+%% Training portion of symbol machine
+
 bestScaleFactor = 0.1;
 bestPenalty = realmax;
 
