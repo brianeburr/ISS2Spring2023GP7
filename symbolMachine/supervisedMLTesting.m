@@ -75,7 +75,7 @@ title("Accuracy");
 load("probMLModels\linRegModel.mat");
 sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', userIn, '_test.mat'));
 
-varVal = bestVar;
+varVal = 0.7; % bestVar
 initProbVal = (ones(9,1) - varVal) / 8;
 table = ones(1,9);
 count = ones(1,9);

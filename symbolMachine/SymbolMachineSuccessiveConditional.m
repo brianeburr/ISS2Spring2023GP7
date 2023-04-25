@@ -68,8 +68,3 @@ for ii = 2:sequenceLength
     sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + 1;
 end
 reportSymbolMachine;
-
-
-
-
-
