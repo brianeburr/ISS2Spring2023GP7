@@ -11,11 +11,13 @@
 
 %% Training Portion of symbol machine
 
-sequenceName = 'DIAwind'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
+sequenceName = 'DIAtemp'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
 
-bestInitFactor = 0.1;
+bestInitFactor = 0;
+bestAddFactor = 1;
 bestPenalty = realmax; %initalize best penalty to max number
-for initFactor = cat(2, 0:0.01:0.09 , 0.1:0.1:2) 
+initFactor = 0;
+for addFactor = cat(2, 1:0.2:10) 
     sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', sequenceName, '_train.mat'));
     initProbVal = ceil(sequenceLength/9*initFactor)+1; % initial value for probability distribution to be composed of, 
     % assumes uniform distribution to start, prevents probability of zero,
@@ -35,17 +37,17 @@ for initFactor = cat(2, 0:0.01:0.09 , 0.1:0.1:2)
         lastKnownSymbol = SYMBOLDATA.sequence(ii-1);  %finds most recent symbol to index into props matrix, give conditional probabilities
         probs = sums(lastKnownSymbol,:)/sum(sums(lastKnownSymbol,:));
         [symbol,penalty] = symbolMachine(probs);
-        sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + 1;
+        sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + addFactor;
     end
     %4. Run 'report symbol machine
     %reportSymbolMachine;
     if SYMBOLDATA.totalPenaltyInBits < bestPenalty
-        bestInitFactor = initFactor;
+        bestAddFactor = addFactor;
         bestPenalty = SYMBOLDATA.totalPenaltyInBits;
     end
-    disp("Testing initFactor: " + initFactor + ". Percent Guessed Correct: " + 100*SYMBOLDATA.correctPredictions/SYMBOLDATA.sequenceLength + ". Total Penalty: " + SYMBOLDATA.totalPenaltyInBits);
+    disp("Testing addFactor: " + addFactor + ". Percent Guessed Correct: " + 100*SYMBOLDATA.correctPredictions/SYMBOLDATA.sequenceLength + ". Total Penalty: " + SYMBOLDATA.totalPenaltyInBits);
 end
-disp("Empirically Determined Best Init Factor: " + bestInitFactor)
+disp("Empirically Determined Best add Factor: " + bestAddFactor)
 
 
 
@@ -65,7 +67,7 @@ for ii = 2:sequenceLength
     lastKnownSymbol = SYMBOLDATA.sequence(ii-1);  %finds most recent symbol to index into props matrix, give conditional probabilities
     probs = sums(lastKnownSymbol,:)/sum(sums(lastKnownSymbol,:));
     [symbol,penalty] = symbolMachine(probs);
-    sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + 1;
+    sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + bestAddFactor;
 end
 reportSymbolMachine;
 
