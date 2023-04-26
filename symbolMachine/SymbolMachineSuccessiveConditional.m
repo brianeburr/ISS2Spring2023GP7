@@ -70,8 +70,3 @@ for ii = 2:sequenceLength
     sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + bestAddFactor;
 end
 reportSymbolMachine;
-
-
-
-
-
