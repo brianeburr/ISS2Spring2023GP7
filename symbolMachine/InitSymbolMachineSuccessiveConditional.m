@@ -11,15 +11,13 @@
 
 %% Training Portion of symbol machine
 
-sequenceName = 'DIAtemp'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
+sequenceName = 'nonuniform'; % use this line to select name of sequence to analyze, text in between _'text'_ in sequence files
 
-bestInitFactor = 0;
-bestAddFactor = 1;
+bestInitFactor = 0.1;
 bestPenalty = realmax; %initalize best penalty to max number
-initFactor = 0;
-addFactors = [];
-addFactorPenalties = [];
-for addFactor = cat(2, 0.1:0.1:10) 
+initFactors = [];
+initFactorPenalties = [];
+for initFactor = cat(2, 0:0.001:0.009, 0.01:0.01:0.09 , 0.1:0.1:2) 
     sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', sequenceName, '_train.mat'));
     initProbVal = ceil(sequenceLength/9*initFactor)+1; % initial value for probability distribution to be composed of, 
     % assumes uniform distribution to start, prevents probability of zero,
@@ -39,25 +37,27 @@ for addFactor = cat(2, 0.1:0.1:10)
         lastKnownSymbol = SYMBOLDATA.sequence(ii-1);  %finds most recent symbol to index into props matrix, give conditional probabilities
         probs = sums(lastKnownSymbol,:)/sum(sums(lastKnownSymbol,:));
         [symbol,penalty] = symbolMachine(probs);
-        sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + addFactor;
+        sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + 1;
     end
     %4. Run 'report symbol machine
     %reportSymbolMachine;
-    addFactors = [addFactors,addFactor];
-    addFactorPenalties = [addFactorPenalties, SYMBOLDATA.totalPenaltyInBits];
+    initFactors = [initFactors, initProbVal];
+    initFactorPenalties = [initFactorPenalties, SYMBOLDATA.totalPenaltyInBits];
 
     if SYMBOLDATA.totalPenaltyInBits < bestPenalty
-        bestAddFactor = addFactor;
+        bestInitFactor = initFactor;
         bestPenalty = SYMBOLDATA.totalPenaltyInBits;
     end
-    disp("Testing addFactor: " + addFactor + ". Percent Guessed Correct: " + 100*SYMBOLDATA.correctPredictions/SYMBOLDATA.sequenceLength + ". Total Penalty: " + SYMBOLDATA.totalPenaltyInBits);
+    disp("Testing initFactor: " + initFactor + ". Percent Guessed Correct: " + 100*SYMBOLDATA.correctPredictions/SYMBOLDATA.sequenceLength + ". Total Penalty: " + SYMBOLDATA.totalPenaltyInBits);
 end
-disp("Empirically Determined Best add Factor: " + bestAddFactor)
-plot(addFactors, addFactorPenalties);
-title('Penalty vs. Addition Factor - DIATemp training data');
-xlabel('Addition Factors');
-ylabel('Total Penalty (in bits)');
+disp("Empirically Determined Best Init Factor: " + ceil(sequenceLength/9*bestInitFactor)+1)
 
+plot(initFactors, initFactorPenalties);
+title('Penalty vs. Initialization Factor - Nonuniform training data');
+xlabel('Initialization Factors');
+ylabel('Total Penalty (in bits)');
+ax = gca; 
+ax.FontSize = 18; 
 
 
 %% Testing section, uses training from previous section
@@ -76,6 +76,11 @@ for ii = 2:sequenceLength
     lastKnownSymbol = SYMBOLDATA.sequence(ii-1);  %finds most recent symbol to index into props matrix, give conditional probabilities
     probs = sums(lastKnownSymbol,:)/sum(sums(lastKnownSymbol,:));
     [symbol,penalty] = symbolMachine(probs);
-    sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + bestAddFactor;
+    sums(lastKnownSymbol, symbol) = sums(lastKnownSymbol, symbol) + 1;
 end
 reportSymbolMachine;
+
+
+
+
+
