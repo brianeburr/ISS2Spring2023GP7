@@ -17,7 +17,9 @@ bestInitFactor = 0;
 bestAddFactor = 1;
 bestPenalty = realmax; %initalize best penalty to max number
 initFactor = 0;
-for addFactor = cat(2, 1:0.2:10) 
+addFactors = [];
+addFactorPenalties = [];
+for addFactor = cat(2, 0.1:0.1:10) 
     sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', sequenceName, '_train.mat'));
     initProbVal = ceil(sequenceLength/9*initFactor)+1; % initial value for probability distribution to be composed of, 
     % assumes uniform distribution to start, prevents probability of zero,
@@ -41,6 +43,9 @@ for addFactor = cat(2, 1:0.2:10)
     end
     %4. Run 'report symbol machine
     %reportSymbolMachine;
+    addFactors = [addFactors,addFactor];
+    addFactorPenalties = [addFactorPenalties, SYMBOLDATA.totalPenaltyInBits];
+
     if SYMBOLDATA.totalPenaltyInBits < bestPenalty
         bestAddFactor = addFactor;
         bestPenalty = SYMBOLDATA.totalPenaltyInBits;
@@ -48,6 +53,10 @@ for addFactor = cat(2, 1:0.2:10)
     disp("Testing addFactor: " + addFactor + ". Percent Guessed Correct: " + 100*SYMBOLDATA.correctPredictions/SYMBOLDATA.sequenceLength + ". Total Penalty: " + SYMBOLDATA.totalPenaltyInBits);
 end
 disp("Empirically Determined Best add Factor: " + bestAddFactor)
+plot(addFactors, addFactorPenalties);
+title('Penalty vs. Addition Factor - DIATemp training data');
+xlabel('Addition Factors');
+ylabel('Total Penalty (in bits)');
 
 
 
