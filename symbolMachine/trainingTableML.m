@@ -2,14 +2,13 @@ userIn = input("Type the sequence name: ", 's');
 filename = strcat("sequences\sequence_", userIn, "_train.mat");
 load(filename);
 
-sequenceLength = initializeSymbolMachine(strcat('sequences\sequence_', sequenceName, '_test.mat'));
 weight = 1.06;
 layer1Scale = 1;
 layer2Scale = 0.27;
 layer3Scale = 0.34;
 init = 0.002;
 
-dists(1:27) = 0;
+dists = zeros(length(sequence), 37);
 counts = ones(9,9,9,9) / 81;
 last3(1:3) = sequence(1);
 counts(last3(1),last3(2),last3(3),sequence(1)) = counts(last3(1),last3(2),last3(3),sequence(1)) + weight;
